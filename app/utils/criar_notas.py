@@ -72,5 +72,5 @@ class Notas():
         print(f"Nota salva em: {resumo_path}")
 
 if __name__ == '__main__':
-    transcricao_path =  'C:/Users/stall/Documents/programacao/projetos/VEGA/txt.txt'
+    transcricao_path =  ''
     Notas.salvarNotas(transcricao_path)

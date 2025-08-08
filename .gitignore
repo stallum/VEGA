@@ -204,3 +204,8 @@ __marimo__/
 
 # Other Libs
 profile/
+test/
+test-results/
+.pytest_
+_videos/
+_images/

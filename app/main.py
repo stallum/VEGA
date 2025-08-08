@@ -16,27 +16,6 @@ from langchain_core.prompt_values import ChatPromptValue
 class VEGA:
     def __init__(self):
         self.llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
-    
-    def criar_agente(self):
-        llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
-        
-        prompt = ChatPromptValue([
-            (
-                "system",
-                """
-                Você é um agente especializado em ajudar o usuário criar notas detalhadas e completas;
-                Você deve extrair as informações principais dos dados que são te entregues;
-                Sempre deve-se resumir as informações de maneira claras e concisas;
-                Mantenha o controle dos resultados das ferramentas e incorpore-os às notas conforme necessário;
-                O resultado final deve estar em português brasileiro e formatado em Markdown.
-                """ 
-             ),
-             ("placeholder", "{chat_history}"),
-             ("human", "{input}"),
-        ])
-
-        return prompt
-
 
     def processarMensagem(self, msg, agente, tools):
         """Essa função verifica a mensagem recebida e escolhe qual é a ferramenta correta para utilizar."""
@@ -57,3 +36,24 @@ class VEGA:
 if __name__ == '__main__':
     bot = VEGA()
     
+"""
+    def criar_agente(self):
+        llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
+        
+        prompt = ChatPromptValue([
+            (
+                "system",
+"""
+                # Você é um agente especializado em ajudar o usuário criar notas detalhadas e completas;
+                # Você deve extrair as informações principais dos dados que são te entregues;
+                # Sempre deve-se resumir as informações de maneira claras e concisas;
+                # Mantenha o controle dos resultados das ferramentas e incorpore-os às notas conforme necessário;
+                # O resultado final deve estar em português brasileiro e formatado em Markdown.
+""" 
+             ),
+             ("placeholder", "{chat_history}"),
+             ("human", "{input}"),
+        ])
+
+        return prompt
+"""

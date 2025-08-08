@@ -12,12 +12,21 @@ class WhatsWeb:
 
     def __init__(self):
         self.dir_path = os.getcwd()
-        self.downloads = os.path.join(self.dir_path, "_downloads_whats")
+        self.downloads = os.path.join(self.dir_path, "_images")
         self.last_src = ''
+
+        os.makedirs(self.downloads, exist_ok=True)
 
         self.options = webdriver.ChromeOptions()
         profile = os.path.join(self.dir_path, "profile", "wpp")
         self.options.add_argument(r"user-data-dir={}".format(profile))
+        prefs = {
+            "download.default_directory": self.downloads,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "safebrowsing.enabled": True
+        }
+        self.options.add_experimental_option("prefs", prefs)
         # self.options.add_argument("--headless=new") # faz com que o chrome abra sem interface
         
         self.webdriver = webdriver.Chrome(options=self.options)
@@ -68,6 +77,45 @@ class WhatsWeb:
             print(e)
         return texto
     
+
+    def baixarArquivo(self, webdriver, post):
+        '''Essa funcção verifica a ultima mensagem e quando for imagem baixa'''
+
+        midia = post[-1].find_element(By.XPATH, (
+            '//*[@aria-label="Abrir imagem"]'
+        ))
+        midia.click()
+        baixar = webdriver.find_element(By.XPATH, (
+            '//*[@aria-label="Baixar"]'
+        ))
+        print('CLICK')
+        baixar.click()
+        
+        if not os.path.exists(self.downloads):
+                os.makedirs(self.downloads)
+                print(f'Pasta criada: {self.downloads}')
+
+        arquivos = [
+            os.path.join(self.downloads, f) 
+            for f in os.listdir(self.downloads) 
+            if os.path.isfile(os.path.join(self.downloads, f))
+        ]
+
+        arquivo_mais_novo = max(arquivos, key=os.path.getmtime)
+        sleep(10)
+        return arquivo_mais_novo
+    
+    def buscarArquivo(self, webdriver, post):
+        try:
+            actions = ActionChains(webdriver)
+            actions.move_to_element(post[-1]).perform()
+            src = post[-1].find_element(By.TAG_NAME, 'img').get_attribute('src')
+            return src
+
+        except Exception as e:
+            print(f"Erro ao ler mensagem: {e}")
+            return None
+
     def ultima_msg(self):
         """Essa Função captura a ultima mensagem da conversa"""
         print('verificando mensagem!')
@@ -80,12 +128,14 @@ class WhatsWeb:
             print('Mensagem encontrada.')
             return msg
         else:
-            print('Mensagem não encontrada.')
-            msg = None
-            return msg
-
-
-
+            src = self.buscarArquivo(self.webdriver, post)
+            if self.last_src != src:
+                self.last_src = src
+                msg = self.baixarArquivo(self.webdriver, post)
+                return msg
+            else:
+                return None
+        
 if __name__ == "__main__":
     whats = WhatsWeb()
     whats.buscarConversas()
