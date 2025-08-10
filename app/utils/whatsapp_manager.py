@@ -20,6 +20,7 @@ class WhatsWeb:
         self.options = webdriver.ChromeOptions()
         profile = os.path.join(self.dir_path, "profile", "wpp")
         self.options.add_argument(r"user-data-dir={}".format(profile))
+
         prefs = {
             "download.default_directory": self.downloads,
             "download.prompt_for_download": False,
@@ -27,6 +28,7 @@ class WhatsWeb:
             "safebrowsing.enabled": True
         }
         self.options.add_experimental_option("prefs", prefs)
+        
         # self.options.add_argument("--headless=new") # faz com que o chrome abra sem interface
         
         self.webdriver = webdriver.Chrome(options=self.options)
@@ -39,7 +41,7 @@ class WhatsWeb:
         """ Essa função encontra o chat do assistente """
         try:
             print('Buscando conversa...')
-            WebDriverWait(self.webdriver, timeout=10)\
+            WebDriverWait(self.webdriver, timeout=20)\
                 .until(EC.presence_of_element_located((By.XPATH, '//div[@aria-label="Caixa de texto de pesquisa"]')))
 
             print('Achou a conversa')
@@ -135,7 +137,7 @@ class WhatsWeb:
                 return msg
             else:
                 return None
-        
+
 if __name__ == "__main__":
     whats = WhatsWeb()
     whats.buscarConversas()
@@ -149,3 +151,4 @@ if __name__ == "__main__":
             print(f"Mensagem recebida: {msg}")
             msg, last_msg = last_msg, msg
         print(msg)
+

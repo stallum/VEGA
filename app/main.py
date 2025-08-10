@@ -13,11 +13,14 @@ load_dotenv()
 from langchain_google_genai import GoogleGenerativeAI
 from langchain_core.prompt_values import ChatPromptValue
 
+from utils.whatsapp_manager import WhatsWeb
+
 class VEGA:
     def __init__(self):
         self.llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
+        self.whats = WhatsWeb()
 
-    def processarMensagem(self, msg, agente, tools):
+    def processarMensagem(self, msg):
         """Essa função verifica a mensagem recebida e escolhe qual é a ferramenta correta para utilizar."""
         resultado = None
         executorPrompt = {
@@ -35,6 +38,18 @@ class VEGA:
 
 if __name__ == '__main__':
     bot = VEGA()
+    bot.whats.buscarConversas()
+    msg = ' '
+    last_msg = '/quit'
+    while msg != '/quit':
+        msg = bot.whats.ultima_msg()
+        print(f"Mensagem recebida: {msg}")
+        last_msg = msg
+        try: 
+            resultado = bot.processarMensagem(msg)
+            print(f"Resultado: {resultado}")
+        except Exception as e:
+            print(e)
     
 """
     def criar_agente(self):
