@@ -43,7 +43,7 @@ class Notas():
         )
         return texto_final
     
-    def salvarNotas(transcricao_path):
+    def salvarNotas(transcricao_path, msg, *args):
         """Essa função salva o texto em um arquivo de texto no diretório _notas."""
         print('Criando nota em arquivo')
 
@@ -51,9 +51,8 @@ class Notas():
         print(f'1transcricao_path {transcricao_path}')
 
         with open(transcricao_path, 'rb') as file:
-            transcricao = file.read()
-            tags = Notas.criarTags(transcricao)
-            resumo = Notas.criarResumos(transcricao)
+            tags = Notas.criarTags(msg)
+            resumo = Notas.criarResumos(msg)
             nota = Notas.formatarNotar(tags, resumo)
             print('Nota criada.\n\n')
         

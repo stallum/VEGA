@@ -1,4 +1,5 @@
 from time import sleep
+import datetime
 
 from langchain.agents import (
     AgentExecutor,
@@ -14,11 +15,13 @@ from langchain_google_genai import GoogleGenerativeAI
 from langchain_core.prompt_values import ChatPromptValue
 
 from utils.whatsapp_manager import WhatsWeb
+from utils.criar_notas import Notas
 
 class VEGA:
     def __init__(self):
         self.llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
         self.whats = WhatsWeb()
+        self.notas = Notas()
 
     def processarMensagem(self, msg):
         """Essa função verifica a mensagem recebida e escolhe qual é a ferramenta correta para utilizar."""
@@ -39,37 +42,19 @@ class VEGA:
 if __name__ == '__main__':
     bot = VEGA()
     bot.whats.buscarConversas()
+    output_path = '_notas'
+
     msg = ' '
     last_msg = '/quit'
+
     while msg != '/quit':
         msg = bot.whats.ultima_msg()
         print(f"Mensagem recebida: {msg}")
         last_msg, msg = msg, last_msg
         print(msg), print(last_msg)
+        path = datetime.date.today().strftime("%d%m%y%H%M%S")
         try: 
-            resultado = bot.processarMensagem(last_msg)
+            resultado = bot.notas.salvarNotas(path, last_msg)
             print(f"Resultado: {resultado}")
         except Exception as e:
             print(e)
-    
-"""
-    def criar_agente(self):
-        llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
-        
-        prompt = ChatPromptValue([
-            (
-                "system",
-"""
-                # Você é um agente especializado em ajudar o usuário criar notas detalhadas e completas;
-                # Você deve extrair as informações principais dos dados que são te entregues;
-                # Sempre deve-se resumir as informações de maneira claras e concisas;
-                # Mantenha o controle dos resultados das ferramentas e incorpore-os às notas conforme necessário;
-                # O resultado final deve estar em português brasileiro e formatado em Markdown.
-""" 
-             ),
-             ("placeholder", "{chat_history}"),
-             ("human", "{input}"),
-        ])
-
-        return prompt
-"""
