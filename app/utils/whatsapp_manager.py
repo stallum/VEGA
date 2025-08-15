@@ -141,26 +141,6 @@ class WhatsWeb:
                 return None
 
 
-    # def ultima_msg(self):
-    #     """Essa Função captura a ultima mensagem da conversa"""
-    #     print('verificando mensagem!')
-    #     post = self.webdriver.find_elements(By.CLASS_NAME, 'message-out')
-        
-    #     print(post)
-    #     msg = self.buscarTexto(post)
-    #     print(msg)
-    #     if msg: 
-    #         print('Mensagem encontrada.')
-    #         return msg
-    #     else:
-    #         src = self.buscarArquivo(self.webdriver, post)
-    #         if self.last_src != src:
-    #             self.last_src = src
-    #             msg = self.baixarArquivo(self.webdriver, post)
-    #             return msg
-    #         else:
-    #             return None
-
 if __name__ == "__main__":
     whats = WhatsWeb()
     whats.buscarConversas()
