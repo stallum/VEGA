@@ -44,9 +44,10 @@ if __name__ == '__main__':
     while msg != '/quit':
         msg = bot.whats.ultima_msg()
         print(f"Mensagem recebida: {msg}")
-        last_msg = msg
+        last_msg, msg = msg, last_msg
+        print(msg), print(last_msg)
         try: 
-            resultado = bot.processarMensagem(msg)
+            resultado = bot.processarMensagem(last_msg)
             print(f"Resultado: {resultado}")
         except Exception as e:
             print(e)

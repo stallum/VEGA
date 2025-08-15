@@ -61,10 +61,10 @@ class WhatsWeb:
     def verificarLermais(self):
         """ Essa função verifica se há o botão "Ler Mais" na ultima conversa """
         print('Buscando "ler mais"...')
-        readMore = self.webdriver.find_element(By.CLASS_NAME, 'read-more-button')
+        readMore = self.webdriver.find_elements(By.CLASS_NAME, 'read-more-button')
         if readMore:
             print('"Ler mais" encontrado...')
-            readMore.click()
+            readMore[0].click()
         else:
             print('Sem "Ler mais" por aqui.')
     
@@ -79,6 +79,18 @@ class WhatsWeb:
             print(e)
         return texto
     
+
+    
+    def buscarArquivo(self, webdriver, post):
+        try:
+            actions = ActionChains(webdriver)
+            actions.move_to_element(post[-1]).perform()
+            src = post[-1].find_element(By.TAG_NAME, 'img').get_attribute('src')
+            return src
+
+        except Exception as e:
+            print(f"Erro ao ler mensagem: {e}")
+            return None
 
     def baixarArquivo(self, webdriver, post):
         '''Essa funcção verifica a ultima mensagem e quando for imagem baixa'''
@@ -106,37 +118,48 @@ class WhatsWeb:
         arquivo_mais_novo = max(arquivos, key=os.path.getmtime)
         sleep(10)
         return arquivo_mais_novo
-    
-    def buscarArquivo(self, webdriver, post):
-        try:
-            actions = ActionChains(webdriver)
-            actions.move_to_element(post[-1]).perform()
-            src = post[-1].find_element(By.TAG_NAME, 'img').get_attribute('src')
-            return src
-
-        except Exception as e:
-            print(f"Erro ao ler mensagem: {e}")
-            return None
 
     def ultima_msg(self):
-        """Essa Função captura a ultima mensagem da conversa"""
         print('verificando mensagem!')
         post = self.webdriver.find_elements(By.CLASS_NAME, 'message-out')
-        
-        print(post)
+
         msg = self.buscarTexto(post)
-        print(msg)
-        if msg: 
-            print('Mensagem encontrada.')
-            return msg
-        else:
-            src = self.buscarArquivo(self.webdriver, post)
-            if self.last_src != src:
-                self.last_src = src
-                msg = self.baixarArquivo(self.webdriver, post)
+        if msg:
+            if msg != self.last_src:  # usando last_src como "última mensagem processada"
+                self.last_src = msg
+                print('Mensagem encontrada.')
                 return msg
             else:
                 return None
+        else:
+            src = self.buscarArquivo(self.webdriver, post)
+            if src and src != self.last_src:
+                self.last_src = src
+                arquivo = self.baixarArquivo(self.webdriver, post)
+                return arquivo
+            else:
+                return None
+
+
+    # def ultima_msg(self):
+    #     """Essa Função captura a ultima mensagem da conversa"""
+    #     print('verificando mensagem!')
+    #     post = self.webdriver.find_elements(By.CLASS_NAME, 'message-out')
+        
+    #     print(post)
+    #     msg = self.buscarTexto(post)
+    #     print(msg)
+    #     if msg: 
+    #         print('Mensagem encontrada.')
+    #         return msg
+    #     else:
+    #         src = self.buscarArquivo(self.webdriver, post)
+    #         if self.last_src != src:
+    #             self.last_src = src
+    #             msg = self.baixarArquivo(self.webdriver, post)
+    #             return msg
+    #         else:
+    #             return None
 
 if __name__ == "__main__":
     whats = WhatsWeb()
