@@ -136,6 +136,7 @@ class WhatsWeb:
             if src and src != self.last_src:
                 self.last_src = src
                 arquivo = self.baixarArquivo(self.webdriver, post)
+                imagem = ''
                 return arquivo
             else:
                 return None

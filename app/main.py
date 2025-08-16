@@ -22,21 +22,16 @@ class VEGA:
         self.llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
         self.whats = WhatsWeb()
         self.notas = Notas()
-
-    def processarMensagem(self, msg):
-        """Essa função verifica a mensagem recebida e escolhe qual é a ferramenta correta para utilizar."""
-        resultado = None
-        executorPrompt = {
-            "input": 
-            f'identifique o tipo de arquivo da mensagem e siga as instruções.'
-            f' - se for um link do youtube: sua resposta deve ser apenas a palavra "link"'
-            f' - se for um arquivo mp4: sua resposta deve ser apenas a palavra "video"'
-            f' - se for um arquivo mp3 ou ogg: sua resposta deve ser apenas a palavra "audio"'
-            f' - se for um arquivo de imagem: descreva a imagem e seu conteudo e salve a nota a partir de sua transcrição'
-            f'a mensagem é: {msg}'}
-        
-        resultado = resultado.invoke(executorPrompt)
-        return resultado
+    
+    def criarTitulo(self, msg):
+        """Essa função cria os titulos ee caminhos para os arquivos de texto finais do programa"""
+        title = self.llm.invoke(
+            f'Crie um titulo de até três (3) palavras para o texto descrito na mensagem: {msg}'
+            f'Esse título deve fazer sentido com todo o conteúdo do texto recebido e deve ser coeso.'
+            f'Deve ser relacionado APENAS ao conteúdo do texto'
+            f'Utilize apenas termos aceitos para nomear arquivos no computador, nada de Caracteres especiais'
+        )
+        return title
     
 
 if __name__ == '__main__':
@@ -49,13 +44,16 @@ if __name__ == '__main__':
 
     while msg != '/quit':
         output_path = '_msgs'
-        path = datetime.date.today().strftime("%d-%m-%y_%H-%M-%S")
-        msg_path = f"{output_path}/{path}.txt"
 
         msg = bot.whats.ultima_msg()
         print(f"Mensagem recebida: {msg}")
         last_msg, msg = msg, last_msg
         
+        path = bot.criarTitulo(last_msg)
+        print(path)
+
+        msg_path = f"{output_path}/{path}.txt"
+
         if not os.path.exists(output_path):
             os.makedirs(output_path)
             print(f'Criando pasta "_msgs" em: {output_path}')
