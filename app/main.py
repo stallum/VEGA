@@ -48,13 +48,25 @@ if __name__ == '__main__':
     last_msg = '/quit'
 
     while msg != '/quit':
+        output_path = '_msgs'
+        path = datetime.date.today().strftime("%d-%m-%y_%H-%M-%S")
+        msg_path = f"{output_path}/{path}.txt"
+
         msg = bot.whats.ultima_msg()
         print(f"Mensagem recebida: {msg}")
         last_msg, msg = msg, last_msg
-        print(msg), print(last_msg)
-        path = datetime.date.today().strftime("%d%m%y%H%M%S")
+        
+        if not os.path.exists(output_path):
+            os.makedirs(output_path)
+            print(f'Criando pasta "_msgs" em: {output_path}')
+
+        with open(msg_path, "w") as arquivo:
+            arquivo.write(last_msg)
+
+        text_path = os.PathLike()
+
         try: 
-            resultado = bot.notas.salvarNotas(path, last_msg)
+            resultado = bot.notas.salvarNotas(text_path, last_msg)
             print(f"Resultado: {resultado}")
         except Exception as e:
             print(e)

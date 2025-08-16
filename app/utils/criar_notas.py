@@ -47,8 +47,9 @@ class Notas():
         """Essa função salva o texto em um arquivo de texto no diretório _notas."""
         print('Criando nota em arquivo')
 
-        transcricao_path = transcricao_path.replace("'", "")
-        print(f'1transcricao_path {transcricao_path}')
+        # transcricao_path = transcricao_path.replace("'", "")
+        # transcricao_path = str(transcricao_path)
+        print(f'transcricao_path {transcricao_path}')
 
         with open(transcricao_path, 'rb') as file:
             tags = Notas.criarTags(msg)
