@@ -79,8 +79,6 @@ class WhatsWeb:
             print(e)
         return texto
     
-
-    
     def buscarArquivo(self, webdriver, post):
         try:
             actions = ActionChains(webdriver)
@@ -116,6 +114,7 @@ class WhatsWeb:
         ]
 
         arquivo_mais_novo = max(arquivos, key=os.path.getmtime)
+        print(f'esse é o arquivo mais novo: {arquivo_mais_novo}')
         sleep(10)
         return arquivo_mais_novo
 
@@ -128,7 +127,8 @@ class WhatsWeb:
             if msg != self.last_src:  # usando last_src como "última mensagem processada"
                 self.last_src = msg
                 print('Mensagem encontrada.')
-                return msg
+                texto = 'texto'
+                return msg, texto
             else:
                 return None
         else:
@@ -136,8 +136,8 @@ class WhatsWeb:
             if src and src != self.last_src:
                 self.last_src = src
                 arquivo = self.baixarArquivo(self.webdriver, post)
-                imagem = ''
-                return arquivo
+                imagem = 'imagem'
+                return arquivo, imagem
             else:
                 return None
 

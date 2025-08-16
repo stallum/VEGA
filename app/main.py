@@ -16,12 +16,14 @@ from langchain_core.prompt_values import ChatPromptValue
 
 from utils.whatsapp_manager import WhatsWeb
 from utils.criar_notas import Notas
+from utils.image import ProcessImage
 
 class VEGA:
     def __init__(self):
         self.llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
         self.whats = WhatsWeb()
         self.notas = Notas()
+        self.image = ProcessImage()
     
     def criarTitulo(self, msg):
         """Essa função cria os titulos ee caminhos para os arquivos de texto finais do programa"""
@@ -44,14 +46,18 @@ if __name__ == '__main__':
 
     while msg != '/quit':
         output_path = '_msgs'
+        result = bot.whats.ultima_msg()
 
-        msg = bot.whats.ultima_msg()
+        msg, msg_type = result
         print(f"Mensagem recebida: {msg}")
         last_msg, msg = msg, last_msg
         
-        path = bot.criarTitulo(last_msg)
-        print(path)
 
+        if msg_type == 'imagem':
+            last_msg = bot.image.analysis(last_msg)
+
+        path = bot.criarTitulo(last_msg)
+        
         msg_path = f"{output_path}/{path}.txt"
 
         if not os.path.exists(output_path):
