@@ -63,10 +63,7 @@ if __name__ == '__main__':
         with open(msg_path, "w") as arquivo:
             arquivo.write(last_msg)
 
-        text_path = os.PathLike()
-
         try: 
-            resultado = bot.notas.salvarNotas(text_path, last_msg)
-            print(f"Resultado: {resultado}")
+            bot.notas.salvarNotas(msg_path, last_msg)
         except Exception as e:
             print(e)

@@ -9,6 +9,7 @@ load_dotenv()
 llm = GoogleGenerativeAI(model="gemini-2.5-flash-lite")
 
 class Notas():
+    @staticmethod
     def criarTags(texto):
         """ Essa função tem o objetivo de criar as tags da nota """
         print('Criando as Tags')
@@ -23,6 +24,7 @@ class Notas():
         )
         return tags
         
+    @staticmethod
     def criarResumos(texto):
         """ Essa função cria resumos detalhados sobre o conteúdo entregue para a nota"""
         print('Criando Resumo do texto')
@@ -34,6 +36,7 @@ class Notas():
         )
         return resumo
     
+    @staticmethod
     def formatarNotar(tags, resumo):
         """Essa função formata os textos em uma unica nota com título, #tags, os resumos."""
         print('Formatando texto...')
@@ -43,34 +46,44 @@ class Notas():
         )
         return texto_final
     
-    def salvarNotas(transcricao_path, msg, *args):
+    @staticmethod
+    def salvarNotas(transcricao_path, msg):
         """Essa função salva o texto em um arquivo de texto no diretório _notas."""
         print('Criando nota em arquivo')
 
-        # transcricao_path = transcricao_path.replace("'", "")
-        # transcricao_path = str(transcricao_path)
-        print(f'transcricao_path {transcricao_path}')
+        print(f'Processando a partir do caminho: {transcricao_path}')
 
-        with open(transcricao_path, 'rb') as file:
-            tags = Notas.criarTags(msg)
-            resumo = Notas.criarResumos(msg)
-            nota = Notas.formatarNotar(tags, resumo)
-            print('Nota criada.\n\n')
+        tags = Notas.criarTags(msg)
+        resumo = Notas.criarResumos(msg)
+        nota = Notas.formatarNotar(tags, resumo)
+        print('Nota criada.\n\n')
         
         output_path = os.path.dirname(transcricao_path)
         output_path = output_path.replace('transcricoes', 'notas')
 
         base_name = os.path.splitext(os.path.basename(transcricao_path))[0]
-        resumo_path = f'{output_path}/{base_name}.md'
+        resumo_path = os.path.join(output_path, f'{base_name}.md')
 
         if not os.path.exists(output_path):
             os.makedirs(output_path)
             print(f"Criada pasta '_notas' em: {output_path}")
         
-        with open(resumo_path, 'w') as f:
+        with open(resumo_path, 'w', encoding='utf-8') as f:
             f.write(nota)
         print(f"Nota salva em: {resumo_path}")
 
 if __name__ == '__main__':
-    transcricao_path =  ''
-    Notas.salvarNotas(transcricao_path)
+    # Exemplo de como usar a classe Notas
+    # Cria um arquivo de transcrição de teste
+    test_dir = '_transcricoes_teste'
+    if not os.path.exists(test_dir):
+        os.makedirs(test_dir)
+    
+    caminho_teste = os.path.join(test_dir, 'nota_de_teste.txt')
+    conteudo_teste = "A V.E.G.A. é uma assistente de IA projetada para otimizar tarefas diárias. Ela pode resumir textos, vídeos e áudios, e organizar informações de forma eficiente."
+
+    with open(caminho_teste, 'w', encoding='utf-8') as f:
+        f.write(conteudo_teste)
+
+    # Chama a função para salvar a nota. A saída será salva em '_notas_teste/nota_de_teste.md'
+    Notas.salvarNotas(caminho_teste, conteudo_teste)
