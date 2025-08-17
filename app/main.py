@@ -48,15 +48,14 @@ if __name__ == '__main__':
         output_path = '_msgs'
         result = bot.whats.ultima_msg()
 
-        msg, msg_type = result
+        msg = result
         print(f"Mensagem recebida: {msg}")
         last_msg, msg = msg, last_msg
-        
 
-        if msg_type == 'imagem':
-            last_msg = bot.image.analysis(last_msg)
-
-        path = bot.criarTitulo(last_msg)
+        try:
+            path = bot.criarTitulo(last_msg)
+        except Exception as e:
+            print(e)
         
         msg_path = f"{output_path}/{path}.txt"
 

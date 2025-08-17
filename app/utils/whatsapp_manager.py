@@ -114,6 +114,8 @@ class WhatsWeb:
         ]
 
         arquivo_mais_novo = max(arquivos, key=os.path.getmtime)
+
+        arquivo_mais_novo = re.sub('.tmp', '.jpeg', arquivo_mais_novo)
         print(f'esse é o arquivo mais novo: {arquivo_mais_novo}')
         sleep(10)
         return arquivo_mais_novo
@@ -127,8 +129,7 @@ class WhatsWeb:
             if msg != self.last_src:  # usando last_src como "última mensagem processada"
                 self.last_src = msg
                 print('Mensagem encontrada.')
-                texto = 'texto'
-                return msg, texto
+                return msg
             else:
                 return None
         else:
@@ -136,8 +137,7 @@ class WhatsWeb:
             if src and src != self.last_src:
                 self.last_src = src
                 arquivo = self.baixarArquivo(self.webdriver, post)
-                imagem = 'imagem'
-                return arquivo, imagem
+                return arquivo
             else:
                 return None
 
