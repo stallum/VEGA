@@ -35,7 +35,7 @@ class WhatsWeb:
         self.webdriver.get("https://web.whatsapp.com")
 
         # sleep configurado apenas para ler o QRCode.
-        # sleep(60)
+        sleep(300)
     
     def buscarConversas(self):
         """ Essa função encontra o chat do assistente """
@@ -155,4 +155,3 @@ if __name__ == "__main__":
             print(f"Mensagem recebida: {msg}")
             msg, last_msg = last_msg, msg
         print(msg)
-
