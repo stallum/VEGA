@@ -102,6 +102,7 @@ class WhatsWeb:
         ))
         print('CLICK')
         baixar.click()
+        sleep(10)
         
         if not os.path.exists(self.downloads):
                 os.makedirs(self.downloads)
@@ -115,9 +116,7 @@ class WhatsWeb:
 
         arquivo_mais_novo = max(arquivos, key=os.path.getmtime)
 
-        arquivo_mais_novo = re.sub('.tmp', '.jpeg', arquivo_mais_novo)
         print(f'esse é o arquivo mais novo: {arquivo_mais_novo}')
-        sleep(10)
         return arquivo_mais_novo
 
     def ultima_msg(self):

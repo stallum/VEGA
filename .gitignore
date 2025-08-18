@@ -210,5 +210,6 @@ test-results/
 _videos/
 _images/
 _msgs/
-_notas_teste
-_transcricoes_teste
+_notas_teste/
+_transcricoes_teste/
+_pdf/
