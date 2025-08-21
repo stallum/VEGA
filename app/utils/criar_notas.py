@@ -76,15 +76,21 @@ class Notas():
 if __name__ == '__main__':
     # Exemplo de como usar a classe Notas
     # Cria um arquivo de transcrição de teste
-    test_dir = '_transcricoes_teste'
+    test_dir = '_msgs'
     if not os.path.exists(test_dir):
         os.makedirs(test_dir)
     
-    caminho_teste = os.path.join(test_dir, 'nota_de_teste.txt')
-    conteudo_teste = "A V.E.G.A. é uma assistente de IA projetada para otimizar tarefas diárias. Ela pode resumir textos, vídeos e áudios, e organizar informações de forma eficiente."
+    caminho_teste = os.path.join(test_dir, 'livro.txt')
+    # conteudo_teste = "A V.E.G.A. é uma assistente de IA projetada para otimizar tarefas diárias. Ela pode resumir textos, vídeos e áudios, e organizar informações de forma eficiente."
 
-    with open(caminho_teste, 'w', encoding='utf-8') as f:
-        f.write(conteudo_teste)
+    # Lê o conteúdo do arquivo de teste
+    with open(caminho_teste, 'r', encoding='utf-8') as f:
+        conteudo_lido = f.read()
+    print(f"Conteúdo lido do arquivo '{caminho_teste}':\n{conteudo_lido}\n")
+
+
+    # with open(caminho_teste, 'w', encoding='utf-8') as f:
+    #     f.write(conteudo_teste)
 
     # Chama a função para salvar a nota. A saída será salva em '_notas_teste/nota_de_teste.md'
-    Notas.salvarNotas(caminho_teste, conteudo_teste)
+    Notas.salvarNotas(caminho_teste, conteudo_lido)
