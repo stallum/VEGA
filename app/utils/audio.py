@@ -1,7 +1,5 @@
 
 
-
-
 class Audio():
     def ExtrairAudio():
         

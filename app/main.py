@@ -41,6 +41,7 @@ if __name__ == '__main__':
 
     while msg != '/quit':
         output_path = '_msgs'
+        obsidian_path = os.getenv('OBSIDIAN_PATH')
         result = bot.whats.ultima_msg()
 
         msg = result
@@ -53,6 +54,7 @@ if __name__ == '__main__':
             print(e)
         
         msg_path = f"{output_path}/{path}.txt"
+        obsidian = f"{obsidian_path}/{path}"
 
         if not os.path.exists(output_path):
             os.makedirs(output_path)
@@ -62,6 +64,6 @@ if __name__ == '__main__':
             arquivo.write(last_msg)
 
         try: 
-            bot.notas.salvarNotas(msg_path, last_msg)
+            bot.notas.salvarNotas(obsidian, last_msg)
         except Exception as e:
             print(e)

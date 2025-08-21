@@ -32,6 +32,7 @@ class Notas():
             f'Resuma detalhadamente o texto:  \n{texto}\n'
             f'mantendo todas as informações importantes de forma estruturada'
             f'o Resumo deve conter todas as informações para que uma pessoa que não leu o texto orignal possa entender por completo'
+            f'Faça para que seja possível ler, entender e estudar de maneira mais aprofundada quando quiser'
             f'O resultado final deve estar em português brasileiro e formatado em Markdown.'
         )
         return resumo
