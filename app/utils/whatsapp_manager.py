@@ -12,7 +12,7 @@ class WhatsWeb:
 
     def __init__(self):
         self.dir_path = os.getcwd()
-        self.downloads = os.path.join(self.dir_path, "_images")
+        self.downloads = os.path.join(self.dir_path, "_downloads")
         self.last_src = ''
 
         os.makedirs(self.downloads, exist_ok=True)
@@ -35,7 +35,7 @@ class WhatsWeb:
         self.webdriver.get("https://web.whatsapp.com")
 
         # sleep configurado apenas para ler o QRCode.
-        sleep(300)
+        # sleep(300)
     
     def buscarConversas(self):
         """ Essa função encontra o chat do assistente """

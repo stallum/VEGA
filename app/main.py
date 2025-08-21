@@ -58,7 +58,7 @@ if __name__ == '__main__':
             os.makedirs(output_path)
             print(f'Criando pasta "_msgs" em: {output_path}')
 
-        with open(msg_path, "w") as arquivo:
+        with open(msg_path, "w", encoding="utf-8") as arquivo:
             arquivo.write(last_msg)
 
         try: 
